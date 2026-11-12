@@ -1,8 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
+
 import {
-  Save, X, PlusCircle, Gamepad, Monitor,
-  DollarSign, Calendar
+  Save,
+  X,
+  PlusCircle,
+  Gamepad,
+  Monitor,
+  DollarSign,
+  Calendar
 } from 'lucide-react';
 
 const ESTADO_INICIAL = {
@@ -24,7 +30,7 @@ export default function JogoForm({
       setFormData({
         titulo: jogoEmEdicao.titulo || '',
         plataforma: jogoEmEdicao.plataforma || '',
-        preco: jogoEmEdicao.preco || '',
+        preco: jogoEmEdicao.preco ?? '',
         data_lancamento: jogoEmEdicao.data_lancamento
           ? jogoEmEdicao.data_lancamento.split('T')[0]
           : ''
@@ -47,6 +53,7 @@ export default function JogoForm({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     onSalvar(formData);
 
     if (!jogoEmEdicao) {
@@ -63,16 +70,18 @@ export default function JogoForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 border shadow-xl transition-all ${
+      className={`w-full rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 border shadow-xl transition-all ${
         jogoEmEdicao
           ? 'bg-amber-950/20 border-amber-500/40'
           : 'bg-[#111827] border-slate-800'
       }`}
     >
-      {/* Cabeçalho */}
+
+      {/* CABEÇALHO */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800">
 
         <div className="flex items-center gap-3 min-w-0">
+
           <div
             className={`p-3 rounded-xl shrink-0 ${
               jogoEmEdicao
@@ -87,6 +96,7 @@ export default function JogoForm({
           </div>
 
           <div className="min-w-0">
+
             <h2 className="text-base sm:text-lg font-bold text-white">
               {jogoEmEdicao
                 ? 'Editar Jogo'
@@ -94,13 +104,15 @@ export default function JogoForm({
               }
             </h2>
 
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-400 mt-1 break-words">
               {jogoEmEdicao
                 ? `Editando registro #${jogoEmEdicao.id}`
                 : 'Preencha os dados do jogo abaixo'
               }
             </p>
+
           </div>
+
         </div>
 
         {jogoEmEdicao && (
@@ -113,13 +125,15 @@ export default function JogoForm({
             Cancelar edição
           </button>
         )}
+
       </div>
 
-      {/* Campos */}
+      {/* CAMPOS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
 
-        {/* Título */}
+        {/* TÍTULO */}
         <div className="min-w-0 sm:col-span-2">
+
           <label className={labelClass}>
             <Gamepad className="w-4 h-4 text-indigo-400" />
             Título *
@@ -135,10 +149,12 @@ export default function JogoForm({
             placeholder="Ex: God of War Ragnarok"
             className={inputClass}
           />
+
         </div>
 
-        {/* Plataforma */}
+        {/* PLATAFORMA */}
         <div className="min-w-0">
+
           <label className={labelClass}>
             <Monitor className="w-4 h-4 text-indigo-400" />
             Plataforma *
@@ -154,10 +170,12 @@ export default function JogoForm({
             placeholder="Ex: PS5, PC, Switch"
             className={inputClass}
           />
+
         </div>
 
-        {/* Preço */}
+        {/* PREÇO */}
         <div className="min-w-0">
+
           <label className={labelClass}>
             <DollarSign className="w-4 h-4 text-indigo-400" />
             Preço *
@@ -174,10 +192,12 @@ export default function JogoForm({
             placeholder="199.90"
             className={inputClass}
           />
+
         </div>
 
-        {/* Data */}
+        {/* DATA */}
         <div className="min-w-0 sm:col-span-2">
+
           <label className={labelClass}>
             <Calendar className="w-4 h-4 text-indigo-400" />
             Data de lançamento *
@@ -191,10 +211,12 @@ export default function JogoForm({
             onChange={handleChange}
             className={inputClass}
           />
+
         </div>
 
-        {/* Botão */}
+        {/* BOTÃO SALVAR */}
         <div className="sm:col-span-2 mt-2">
+
           <button
             type="submit"
             className={`w-full sm:w-auto sm:min-w-48 py-3.5 px-6 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${
@@ -204,10 +226,18 @@ export default function JogoForm({
             }`}
           >
             <Save className="w-4 h-4" />
-            {jogoEmEdicao ? 'Atualizar Jogo' : 'Salvar Jogo'}
+
+            {jogoEmEdicao
+              ? 'Atualizar Jogo'
+              : 'Salvar Jogo'
+            }
+
           </button>
+
         </div>
+
       </div>
+
     </form>
   );
 }
