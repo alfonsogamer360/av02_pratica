@@ -1,40 +1,47 @@
-import axios from 'axios';
 
-const api = axios.create({
-  // Altere a porta caso seu backend rode em outra (ex: 3000, 3333 ou 8080)
-  baseURL: 'http://localhost:3000'
-});
+const API_URL = import.meta.env.VITE_API_URL || "/api";
+
+async function requisicao(endpoint, opcoes = {}) {
+  const resposta = await fetch(`${API_URL}${endpoint}`, opcoes);
+
+  if (!resposta.ok) {
+    const erro = await resposta.text();
+    throw new Error(erro || `Erro HTTP ${resposta.status}`);
+  }
+
+  if (resposta.status === 204) return null;
+
+  return resposta.json();
+}
 
 export const jogoService = {
-  // GET ALL
-  listarTodos: async () => {
-    const response = await api.get('/jogos');
-    return response.data;
+  listarTodos() {
+    return requisicao("/jogos");
   },
 
-  // GET BY ID
-  buscarPorId: async (id) => {
-    const response = await api.get(`/jogos/${id}`);
-    return response.data;
+  buscarPorId(id) {
+    return requisicao(`/jogos/${id}`);
   },
 
-  // POST
-  criar: async (dadosJogo) => {
-    const response = await api.post('/jogos', dadosJogo);
-    return response.data;
+  criar(jogo) {
+    return requisicao("/jogos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jogo)
+    });
   },
 
-  // PATCH (conforme identificado em PATCH.png no seu repositório)
-  atualizar: async (id, dadosJogo) => {
-    const response = await api.patch(`/jogos/${id}`, dadosJogo);
-    return response.data;
+  atualizar(id, jogo) {
+    return requisicao(`/jogos/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jogo)
+    });
   },
 
-  // DELETE
-  excluir: async (id) => {
-    const response = await api.delete(`/jogos/${id}`);
-    return response.data;
+  excluir(id) {
+    return requisicao(`/jogos/${id}`, {
+      method: "DELETE"
+    });
   }
 };
-
-export default api;
