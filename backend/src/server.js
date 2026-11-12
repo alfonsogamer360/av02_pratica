@@ -1,14 +1,26 @@
+
 import express from "express";
 import { routerJogo } from "./routes/jogo.routes.js";
-import cors from 'cors'
+import cors from "cors";
 
-const app = express()
-const port = 3000
+const app = express();
 
-app.use(cors())
-app.use(express.json())
-app.use("/jogos", routerJogo)
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://av02pratica.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
 
-app.listen(port, () => {
-    console.log(`API rodando em http://localhost:${port}`);
-})
+app.use(cors(corsOptions));
+app.use(express.json());
+
+app.use("/api/jogos", routerJogo);
+
+app.get("/api", (req, res) => {
+  res.json({ mensagem: "API funcionando!" });
+});
+
+export default app;
